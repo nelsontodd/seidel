@@ -79,7 +79,7 @@ state gauss_seidel(const Matrix& A, const Vector& b, Vector& x,
       double sum = 0;
       for(int j=0; j<n; j++) {
 	if(j==i) continue;
-	sum += A(i,j)*xOld(j);
+	sum += sum + A(i,j)*xOld(j);
       }
       x(i) = ( -sum + b(i) ) / A(i,i);
     }
