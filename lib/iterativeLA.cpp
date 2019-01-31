@@ -9,6 +9,8 @@ using namespace std;
 state jacobi(const Matrix& A, const Vector& b, Vector& x,
 	     int& maxIter, double tol) {
 
+  cout << "Using method JACOBI" << endl;
+
   // CHECK DATA
 
   int n = A.n(0);
@@ -57,6 +59,8 @@ state jacobi(const Matrix& A, const Vector& b, Vector& x,
 state gauss_seidel(const Matrix& A, const Vector& b, Vector& x,
 	     int& maxIter, double tol) {
 
+  cout << "Using method GAUSS SEIDEL" << endl;
+
   // CHECK DATA
 
   int n = A.n(0);
@@ -102,6 +106,7 @@ state gauss_seidel(const Matrix& A, const Vector& b, Vector& x,
 
 state SOR(const Matrix& A, const Vector& b, Vector& x,
 	     int& maxIter, double tol, double w) {
+  cout << "Using method SOR" << endl;
 
   // CHECK DATA
 
@@ -114,7 +119,7 @@ state SOR(const Matrix& A, const Vector& b, Vector& x,
     if(A(i,i) == 0) return BAD_DIAGONAL;
   }
 
-  // APPLY GAUSS-SEIDEL
+  // APPLY SOR
 
   Vector xOld(x);
 

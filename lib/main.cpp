@@ -1,22 +1,15 @@
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
+
 using namespace std;
 
 #include "iterativeLA.h"
 
-int read_input_file(string fpath) {
-	ifstream reader(fpath) ;
-	int i;
-	char val;
-	for ( i = 0 ; ! reader.eof() ; i++ ){
-	reader.get(val);
-	cout << val;
-	}
-	return 0;
-}
-
 int main() {
   
+  state method_state;
+  string method_name;
   int n;
   ifstream nfile("config/size.cfg");
   nfile >> n;
@@ -33,12 +26,21 @@ int main() {
   int maxIter;
   double tolerance;
   itertolfile >> maxIter >> tolerance;
-  cout << A;
+
+  if (std::getenv("METHOD"))
+     method_name = std::getenv("METHOD");
+  if (method_name == "GAUSS SEIDEL")
+    method_state = gauss_seidel(A,b,x,maxIter,tolerance);
+  else if (method_name == "SOR")
+    method_state = SOR(A,b,x,maxIter,tolerance,1.2);
+  else {
+    method_name = "JACOBI";
+    method_state = jacobi(A,b,x,maxIter,tolerance);
+    cout << "WARN: METHOD VAR MUST BE IN: [JACOBI, GAUSS SEIDEL, SOR]" << endl;
+  }
 
 
-  state s = jacobi(A,b,x,maxIter,tolerance);
-
-  switch(s) {
+  switch(method_state) {
   case WONT_STOP:
     cout << "ERROR: Exceeded maximum number of iterations." << endl;
     return 1;
