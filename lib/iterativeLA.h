@@ -10,4 +10,6 @@ state jacobi(const Matrix& A, const Vector& b, Vector& x,
 
 state gauss_seidel(const Matrix& A, const Vector& b, Vector& x,
 	     int& maxIter, double tol);
+state SOR(const Matrix& A, const Vector& b, Vector& x,
+	     int& maxIter, double tol, double w);
 #endif
