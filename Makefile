@@ -9,7 +9,9 @@ BUILD_DIR := build
 # == Files ==
 #
 LIBS := $(wildcard $(LIB_DIR)/*.cpp)
-OBJS  = $(LIBS:.cpp=.o)
+OBJS = $(LIBS:.cpp=.o)
+#TODO: Do this more intelligently
+BUILD_OBJS = $(foreach obj,$(OBJS),$(BUILD_DIR)/$(notdir $(obj)))
 
 #
 # == CC Flags ==
@@ -30,5 +32,5 @@ clean:
 %.o: %.cpp
 	$(CC) -o $(BUILD_DIR)/$(notdir $@) -c $<
 
-iterativeLA: $(OBJS)
-	$(CC) -o $(BIN_DIR)/iterativeLA $(BUILD_DIR)/$(notdir $<)
+iterativeLA: $(OBJS) 
+	$(CC) -o $(BIN_DIR)/iterativeLA $(BUILD_OBJS)
