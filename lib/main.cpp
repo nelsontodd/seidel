@@ -16,6 +16,7 @@ int main() {
   ifstream Afile("config/matrix.cfg");
   Matrix A(n,n);
   Afile >> A;
+  cout << "Matrix A: " << A << endl;
   ifstream bfile("config/vector.cfg");
   Vector b(n);
   bfile >> b;
@@ -33,10 +34,18 @@ int main() {
     method_state = gauss_seidel(A,b,x,maxIter,tolerance);
   else if (method_name == "SOR")
     method_state = SOR(A,b,x,maxIter,tolerance,1.2);
+  else if (method_name == "CGD") {
+    method_state = cgd(A,b,x,maxIter,tolerance, "jacobi");
+    cout << "Method state: " << method_name << endl;
+  }
+  else if (method_name == "CGD-NO-PRECONDITION") {
+    method_state = cgd_no_conditioning(A,b,x,maxIter,tolerance);
+    cout << "Method state: " << method_name << endl;
+  }
   else {
     method_name = "JACOBI";
     method_state = jacobi(A,b,x,maxIter,tolerance);
-    cout << "WARN: METHOD VAR MUST BE IN: [JACOBI, GAUSS SEIDEL, SOR]" << endl;
+    cout << "WARN: METHOD VAR MUST BE IN: [JACOBI, GAUSS SEIDEL, SOR, CGD]" << endl;
   }
 
 
@@ -46,6 +55,9 @@ int main() {
     return 1;
   case BAD_DIAGONAL:
     cout << "ERROR: A diagonal entry of A was 0." << endl;
+    return 1;
+  case NOT_SYMMETRIC:
+    cout << "ERROR: A was not symmetric." << endl;
     return 1;
   default:
     cout << "ERROR: Unspecified." << endl;
